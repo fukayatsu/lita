@@ -307,6 +307,26 @@ end
 
 For more detailed examples, check out the built in authorization, help, and web handlers, or external handlers [lita-karma](https://github.com/jimmycuadra/lita-karma) and [lita-google-images](https://github.com/jimmycuadra/lita-google-images). See the API documentation for exact specifications for handlers' methods.
 
+## Timers
+
+Lita includes a timer class that can be used to execute some code after a delay, or repeatedly at regular intervals. This can be useful, for example, for handlers that need to perform some sort of polling behavior.
+
+This code prints "Hello, Lita!" after 3 seconds:
+
+``` ruby
+timer = Lita::Timer.new
+timer.after(3) { puts "Hello, Lita!" }
+```
+
+This code prints "Just checking!" every 5 seconds until stopped:
+
+``` ruby
+timer = Lita::Timer.new
+timer.every(5) { puts "Just checking!" }
+```
+
+Each `Lita::Timer` object can have any number of one-time or recurring callbacks attached to it. The timer will be executing in a thread infinitely until it's stopped. To stop a timer, simply call `timer.stop`.
+
 ## Testing
 
 It's a core philosophy of Lita that any plugins you write for your robot should be as thoroughly tested as any other program you would write. To make this easier, Lita ships with some handy extras for [RSpec](https://github.com/rspec/rspec) that make testing a handler dead simple. They require the full RSpec suite (rspec-core, rspec-expectations, and rspec-mocks) version 2.14 or higher, as they use the newer `expect(obj).to receive(:message)` syntax.
