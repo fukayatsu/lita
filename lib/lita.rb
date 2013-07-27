@@ -8,6 +8,7 @@ require "multi_json"
 require "rack"
 require "redis-namespace"
 require "thin"
+require "timers"
 
 require "lita/version"
 require "lita/config"
@@ -94,6 +95,7 @@ end
 
 require "lita/util"
 require "lita/logger"
+require "lita/timer"
 require "lita/user"
 require "lita/source"
 require "lita/authorization"
