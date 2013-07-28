@@ -32,10 +32,11 @@ module Lita
       Lita.handlers.each { |handler| handler.dispatch(self, message) }
     end
 
-    # Starts the robot, booting the web server and delegating to the adapter to
-    # connect to the chat service.
+    # Starts the robot, regsitering handler events subscriptions, booting the
+    # web server and delegating to the adapter to connect to the chat service.
     # @return [void]
     def run
+      register_events
       run_app
       @adapter.run
     rescue Interrupt
@@ -84,6 +85,12 @@ module Lita
       end
 
       @adapter = adapter_class.new(self)
+    end
+
+    # Tell all handlers to subscribe to events declared with {Lita::Handler.on},
+    # now that we have a {Lita::Robot} instance.
+    def register_events
+      Lita.handlers.each { |handler| handler.register_events(self) }
     end
 
     # Starts the web server.

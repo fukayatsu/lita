@@ -19,6 +19,8 @@ describe Lita::Handler, lita: true do
 
       http.get "web", :web
 
+      on :connected
+
       def foo(response)
       end
 
@@ -33,6 +35,9 @@ describe Lita::Handler, lita: true do
 
       def danger(response)
         raise "The developer of this handler's got a bug in their code!"
+      end
+
+      def connected(payload)
       end
 
       def self.name
@@ -127,6 +132,23 @@ describe Lita::Handler, lita: true do
     it "raises an exception if the handler doesn't define self.name" do
       handler_class = Class.new(described_class)
       expect { handler_class.namespace }.to raise_error
+    end
+  end
+
+  describe ".on" do
+    let(:robot) { Lita::Robot.new }
+
+    before do
+      allow_any_instance_of(Lita::Adapters::Shell).to receive(:run)
+      allow(Lita).to receive(:handlers).and_return([handler_class])
+    end
+
+    it "subscribes to an event on the global event bus" do
+      expect_any_instance_of(handler_class).to receive(:connected).with(
+        hash_including(foo: :bar)
+      )
+      robot.run
+      Lita.publish(:connected, foo: :bar)
     end
   end
 

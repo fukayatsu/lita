@@ -100,7 +100,35 @@ ERROR
         end
       end
 
+      # Sets up an event subscription for the specified event.
+      # @param event_name [String, Symbol, Regexp] The name of the event to
+      #   subscribe to.
+      # @param method_name [String, Symbol] The name of the handler instance
+      #   method to invoke when the event is published.
+      # @return [void]
+      def on(event_name, method_name = event_name)
+        event_handlers << { name: event_name, method: method_name }
+      end
+
+      # Registers all event subscriptions declared with {Lita::Handler.on} with
+      # the currently running robot.
+      # @api private
+      # @return [void]
+      def register_events(robot)
+        event_handlers.each do |event_handler|
+          Lita.subscribe(
+            event_handler[:name],
+            new(robot),
+            event_handler[:method]
+          )
+        end
+      end
+
       private
+
+      def event_handlers
+        @event_handlers ||= []
+      end
 
       # Determines whether or not an incoming messages should trigger a route.
       def route_applies?(route, message, robot)
