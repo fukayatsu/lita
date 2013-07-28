@@ -18,7 +18,7 @@ module Lita
   module RSpec
     # Causes all interaction with Redis to use a test-specific namespace. Clears
     # Redis before each example. Stubs the logger to prevent log messages from
-    # cluttering test output. Clears Lita's global configuration.
+    # cluttering test output. Clears Lita's global configuration and events.
     # @param base [Object] The class including the module.
     # @return [void]
     def self.included(base)
@@ -30,6 +30,7 @@ module Lita
           logger = double("Logger").as_null_object
           allow(Lita).to receive(:logger).and_return(logger)
           Lita.clear_config
+          Lita.clear_events
         end
       end
     end

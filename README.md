@@ -348,6 +348,7 @@ This provides the following:
 * All Redis interaction will be namespaced to a test environment and automatically cleared out before each example.
 * Lita's logger is stubbed to prevent log messages from cluttering up your test output.
 * Lita's configuration is cleared out before each example, so that the first call to `Lita.config` will start from the default configuration.
+* All subscriptions on the global event bus are cleared.
 * `Lita.handlers` will return an array with only the class you're testing (`described_class`).
 * Strings sent with `Lita::Robot#send_messages` will be pushed to an array accessible as `replies` so you can make expectations about output from the robot.
 * You have access to the following cached objects set with `let`: `robot`, `source`, and `user`. Note that these objects are instances of the real classes and not test doubles.
@@ -405,6 +406,7 @@ If you use `lita: true` instead of `lita_handler: true` in the metadata for your
 * All Redis interaction will be namespaced to a test environment and automatically cleared out before each example.
 * Lita's logger is stubbed to prevent log messages from cluttering up your test output.
 * Lita's configuration is cleared out before each example, so that the first call to `Lita.config` will start from the default configuration.
+* All subscriptions on the global event bus are cleared.
 
 ## Deploying to Heroku
 

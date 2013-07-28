@@ -3,6 +3,7 @@ require "logger"
 require "set"
 require "shellwords"
 
+require "event_bus"
 require "faraday"
 require "multi_json"
 require "rack"
@@ -47,6 +48,12 @@ module Lita
       handlers << handler
     end
 
+    # Clears all subscriptions on the global event bus.
+    # @return [void]
+    def clear_events
+      EventBus.clear
+    end
+
     # The global configuration object. Provides user settings for the robot.
     # @return [Lita::Config] The Lita configuration object.
     def config
@@ -74,6 +81,14 @@ module Lita
       @logger ||= Logger.get_logger(Lita.config.robot.log_level)
     end
 
+    # Publish an event on the global event bus.
+    # @param event_name [String, Symbol] The name of the event.
+    # @param payload [Hash] An optional payload for the event.
+    # @return [void]
+    def publish(*args)
+      EventBus.publish(*args)
+    end
+
     # The root Redis object.
     # @return [Redis::Namespace] The root Redis object.
     def redis
@@ -89,6 +104,16 @@ module Lita
     def run(config_path = nil)
       Config.load_user_config(config_path)
       Robot.new.run
+    end
+
+    # Subscribe to an event on the global event bus.
+    # @param event_name [String, Symbol, Regexp] The name of the event.
+    # @param receiver [Object] The object subscribing to the event.
+    # @param method_name [String, Symbol] The receiver's method to call when the
+    #   event is published.
+    # @return [void]
+    def subscribe(*args, &block)
+      EventBus.subscribe(*args, &block)
     end
   end
 end
