@@ -19,7 +19,7 @@ module Lita
 
     # Invokes the given block repeatedly, waiting the given number of seconds
     #   between each invocation.
-    # @param delay [Integer] The number of seconds to wait before each
+    # @param interval [Integer] The number of seconds to wait before each
     #   invocation of the block.
     # @return [void]
     def every(interval, &block)
