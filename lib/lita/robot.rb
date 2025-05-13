@@ -219,7 +219,7 @@ module Lita
       http_config = config.http
 
       @server_thread = Thread.new do
-        @server = Puma::Server.new(app)
+        @server = Puma::Server.new(app, nil, { min_threads: http_config.min_threads, max_threads: http_config.max_threads })
         begin
           @server.add_tcp_listener(http_config.host, http_config.port.to_i)
         rescue Errno::EADDRINUSE, Errno::EACCES => e
@@ -230,8 +230,6 @@ module Lita
           )
           abort
         end
-        @server.min_threads = http_config.min_threads
-        @server.max_threads = http_config.max_threads
         @server.run
       end
 

@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "ice_nine", ">= 0.11"
   spec.add_runtime_dependency "i18n", ">= 1.8"
   spec.add_runtime_dependency "multi_json", ">= 1.15"
-  spec.add_runtime_dependency "puma", ">= 4.3"
+  spec.add_runtime_dependency "puma", ">= 6.0"
   spec.add_runtime_dependency "rack", ">= 2.2"
   spec.add_runtime_dependency "rb-readline", ">= 0.5"
   spec.add_runtime_dependency "redis-namespace", ">= 1.7"
